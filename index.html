@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Kelontong - Aplikasi Penjualan</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .menu button {
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .menu button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0.9;
+        }
+        
+        .content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        h2 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #4facfe;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #6c757d, #868e96);
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .rupiah {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .rupiah-total {
+            color: #d32f2f;
+            font-size: 1.2em;
+        }
+        
+        .harga-preview {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        
+        .faktur-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .faktur-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .faktur-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .faktur-info-item {
+            flex: 1;
+        }
+        
+        .faktur-pelanggan {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .faktur-footer {
+            margin-top: 30px;
+            text-align: right;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .chart-container {
+            margin-top: 30px;
+            height: 300px;
+        }
+        
+        .report-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .report-card {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .report-card h3 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .report-card .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .menu {
+                flex-direction: column;
+            }
+            
+            .menu button {
+                width: 100%;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .faktur-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+            }
+            
+            .filter-item {
+                width: 100%;
+            }
+            
+            .report-summary {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Toko Kelontong Bahagia</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <h1>Toko Kelontong Bahagia</h1>
+                    <p>Segala kebutuhan sehari-hari tersedia</p>
+                </div>
+            </div>
+        </header>
+    
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h2><section>Selamat Datang di Toko Kelontong Bahagia</section></h2>
+                    <p>Temukan segala kebutuhan sehari-hari dengan harga terjangkau</p>
+                </div>
+            </section>
+        </main>
+    
+        <footer>
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Toko Kelontong Bahagia</h3>
+                    <p>Jln. Cendra Indah No. 123, Kota Padang</p>
+                    <p>Buka setiap hari 07:00 - 21:00 WIB</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-phone"></i> 0823-9837-2374</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>Toko Kelontong Bahagia. All Rights Reserved.</p>
+            </div>
+        </footer>
+    
+        <script src="script.js"></script>
+    </body>
+    </html>
+
+    <div class="container">
+        <header>
+            <h1>Toko Kelontong Bahagia - Aplikasi Penjualan</h1>
+            <p>Sistem Manajemen Toko Modern</p>
+        </header>
+
+        <div class="menu">
+            <button onclick="showSection('produk')">📦 Data Produk</button>
+            <button onclick="showSection('pelanggan')">👥 Data Pelanggan</button>
+            <button onclick="showSection('transaksi')">💰 Transaksi</button>
+            <button onclick="showSection('laporan')">📊 Laporan Stok</button>
+            <button onclick="showSection('faktur')">🧾 Faktur</button>
+            <button onclick="showSection('rekapitulasi')">📈 Rekapitulasi</button>
+        </div>
+
+        <!-- Halaman Data Produk -->
+        <div id="produk" class="content">
+            <h2>📦 Manajemen Produk</h2>
+            <button class="btn" onclick="showForm('tambah-produk')">+ Tambah Produk</button>
+            
+            <div id="tambah-produk" class="hidden">
+                <h3>Form Tambah Produk</h3>
+                <div class="form-group">
+                    <label for="kode-produk">Kode Produk</label>
+                    <input type="text" id="kode-produk" placeholder="PRD001" required>
+                </div>
+                <div class="form-group">
+                    <label for="nama-produk">Nama Produk</label>
+                    <input type="text" id="nama-produk" placeholder="Nama produk" required>
+                </div>
+                <div class="form-group">
+                    <label for="harga-produk">Harga Jual</label>
+                    <input type="number" id="harga-produk" placeholder="Harga" required>
+                    <div class="harga-preview">Format: <span id="harga-preview" class="rupiah">Rp 0</span></div>
+                </div>
+                <div class="form-group">
+                    <label for="stok-produk">Stok Awal</label>
+                    <input type="number" id="stok-produk" placeholder="Jumlah stok" required>
+                </div>
+                <button class="btn" onclick="tambahProduk()">Simpan Produk</button>
+                <button class="btn btn-secondary" onclick="hideForm('tambah-produk')">Batal</button>
+            </div>
+
+            <table id="tabel-produk">
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama Produk</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="daftar-produk">
+                    <!-- Data produk akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Halaman Data Pelanggan -->
+        <div id="pelanggan" class="content hidden">
+            <h2>👥 Manajemen Pelanggan</h2>
+            <button class="btn" onclick="showForm('tambah-pelanggan')">+ Tambah Pelanggan</button>
+            
+            <div id="tambah-pelanggan" class="hidden">
+                <h3>Form Tambah Pelanggan</h3>
+                <div class="form-group">
+                    <label for="kode-pelanggan">Kode Pelanggan</label>
+                    <input type="text" id="kode-pelanggan" placeholder="PLG001" required>
+                </div>
+                <div class="form-group">
+                    <label for="nama-pelanggan">Nama Lengkap</label>
+                    <input type="text" id="nama-pelanggan" placeholder="Nama pelanggan" required>
+                </div>
+                <div class="form-group">
+                    <label for="alamat-pelanggan">Alamat</label>
+                    <input type="text" id="alamat-pelanggan" placeholder="Alamat lengkap" required>
+                </div>
+                <div class="form-group">
+                    <label for="telepon-pelanggan">Telepon</label>
+                    <input type="text" id="telepon-pelanggan" placeholder="Nomor telepon" required>
+                </div>
+                <button class="btn" onclick="tambahPelanggan()">Simpan Pelanggan</button>
+                <button class="btn btn-secondary" onclick="hideForm('tambah-pelanggan')">Batal</button>
+            </div>
+
+            <table id="tabel-pelanggan">
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Alamat</th>
+                        <th>Telepon</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="daftar-pelanggan">
+                    <!-- Data pelanggan akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Halaman Transaksi -->
+        <div id="transaksi" class="content hidden">
+            <h2>💰 Transaksi Penjualan</h2>
+            <div class="form-group">
+                <label for="pelanggan-transaksi">Pilih Pelanggan</label>
+                <select id="pelanggan-transaksi">
+                    <option value="">-- Umum --</option>
+                </select>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <div class="form-group" style="flex: 3;">
+                    <label for="produk-transaksi">Pilih Produk</label>
+                    <select id="produk-transaksi">
+                        <option value="">-- Pilih Produk --</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="jumlah-transaksi">Jumlah</label>
+                    <input type="number" id="jumlah-transaksi" min="1" value="1">
+                </div>
+                <div style="align-self: flex-end;">
+                    <button class="btn" onclick="tambahItemTransaksi()">+ Tambah</button>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 25px;">Daftar Item</h3>
+            <table id="tabel-item-transaksi">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Subtotal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="daftar-item-transaksi">
+                    <!-- Item transaksi akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+            
+            <div class="summary-card">
+                <h3>Total Transaksi: <span id="total-transaksi" class="rupiah-total">Rp 0</span></h3>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" onclick="resetTransaksi()">Batal</button>
+                <button class="btn" onclick="simpanTransaksi()">Simpan Transaksi</button>
+            </div>
+        </div>
+
+        <!-- Halaman Laporan Stok -->
+        <div id="laporan" class="content hidden">
+            <h2>📊 Laporan Stok Produk</h2>
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="keyword-cari-stok" placeholder="Cari produk..." style="padding: 10px; width: 300px; max-width: 100%;">
+                <button class="btn" onclick="cariStok()" style="margin-left: 10px;">Cari</button>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="daftar-laporan">
+                    <!-- Data stok akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Halaman Faktur -->
+        <div id="faktur" class="content hidden">
+            <h2>🧾 Faktur Penjualan</h2>
+            <div class="form-group">
+                <label for="nomor-faktur">Pilih Faktur</label>
+                <select id="nomor-faktur" onchange="tampilkanFaktur()" style="width: 100%;">
+                    <option value="">-- Pilih nomor faktur --</option>
+                </select>
+            </div>
+            
+            <div id="detail-faktur" style="margin-top: 25px;">
+                <!-- Detail faktur akan diisi oleh JavaScript -->
+            </div>
+        </div>
+
+        <!-- Halaman Rekapitulasi Penjualan -->
+        <div id="rekapitulasi" class="content hidden">
+            <h2>📈 Rekapitulasi Penjualan</h2>
+            
+            <div class="filter-container">
+                <div class="filter-item">
+                    <label for="periode-laporan">Periode Laporan</label>
+                    <select id="periode-laporan" onchange="ubahPeriodeLaporan()">
+                        <option value="harian">Harian</option>
+                        <option value="bulanan">Bulanan</option>
+                        <option value="tahunan">Tahunan</option>
+                    </select>
+                </div>
+                
+                <div class="filter-item" id="filter-tanggal-container">
+                    <label for="filter-tanggal">Tanggal</label>
+                    <input type="date" id="filter-tanggal" onchange="muatLaporanPenjualan()">
+                </div>
+                
+                <div class="filter-item hidden" id="filter-bulan-container">
+                    <label for="filter-bulan">Bulan</label>
+                    <input type="month" id="filter-bulan" onchange="muatLaporanPenjualan()">
+                </div>
+                
+                <div class="filter-item hidden" id="filter-tahun-container">
+                    <label for="filter-tahun">Tahun</label>
+                    <select id="filter-tahun" onchange="muatLaporanPenjualan()">
+                        <!-- Tahun akan diisi oleh JavaScript -->
+                    </select>
+                </div>
+            </div>
+            
+            <div class="report-summary">
+                <div class="report-card">
+                    <h3>Total Transaksi</h3>
+                    <div id="total-transaksi-report" class="value">0</div>
+                </div>
+                <div class="report-card">
+                    <h3>Total Pendapatan</h3>
+                    <div id="total-pendapatan-report" class="value rupiah">Rp 0</div>
+                </div>
+                <div class="report-card">
+                    <h3>Produk Terlaris</h3>
+                    <div id="produk-terlaris-report" class="value">-</div>
+                </div>
+                <div class="report-card">
+                    <h3>Pelanggan Terbanyak</h3>
+                    <div id="pelanggan-terbanyak-report" class="value">-</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h3>Daftar Transaksi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No. Faktur</th>
+                            <th>Tanggal</th>
+                            <th>Pelanggan</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daftar-transaksi-report">
+                        <!-- Data transaksi akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="salesChart"></canvas>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: right;">
+                <button class="btn" onclick="cetakLaporan()">Cetak Laporan</button>
+                <button class="btn btn-secondary" onclick="eksporLaporan()">Ekspor ke Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi data jika belum ada
+        function initData() {
+            if (!localStorage.getItem('produk')) {
+                localStorage.setItem('produk', JSON.stringify([
+                    { kode: "PRD001", nama: "Indomie Goreng", harga: 3500, stok: 50 },
+                    { kode: "PRD002", nama: "Aqua Gelas", harga: 2000, stok: 100 }
+                ]));
+            }
+            
+            if (!localStorage.getItem('pelanggan')) {
+                localStorage.setItem('pelanggan', JSON.stringify([
+                    { kode: "PLG001", nama: "Pelanggan Umum", alamat: "-", telepon: "-" }
+                ]));
+            }
+            
+            if (!localStorage.getItem('transaksi')) {
+                localStorage.setItem('transaksi', JSON.stringify([]));
+            }
+        }
+
+        // Format Rupiah
+        function formatRupiah(angka) {
+            if (isNaN(angka)) return 'Rp 0';
+            
+            const numString = Math.round(angka).toString();
+            let rupiah = '';
+            let count = 0;
+            
+            for (let i = numString.length - 1; i >= 0; i--) {
+                rupiah = numString[i] + rupiah;
+                count++;
+                if (count % 3 === 0 && i !== 0) {
+                    rupiah = '.' + rupiah;
+                }
+            }
+            
+            return 'Rp ' + rupiah;
+        }
+
+        // Fungsi untuk menampilkan section
+        function showSection(sectionId) {
+            document.querySelectorAll('.content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Muat data yang diperlukan
+            switch(sectionId) {
+                case 'produk':
+                    muatDataProduk();
+                    break;
+                case 'pelanggan':
+                    muatDataPelanggan();
+                    break;
+                case 'transaksi':
+                    muatDataPelangganUntukTransaksi();
+                    muatDataProdukUntukTransaksi();
+                    break;
+                case 'laporan':
+                    muatLaporanStok();
+                    break;
+                case 'faktur':
+                    muatDaftarFaktur();
+                    break;
+                case 'rekapitulasi':
+                    initLaporanPenjualan();
+                    break;
+            }
+        }
+
+        // Fungsi untuk menampilkan form
+        function showForm(formId) {
+            document.getElementById(formId).classList.remove('hidden');
+        }
+
+        // Fungsi untuk menyembunyikan form
+        function hideForm(formId) {
+            document.getElementById(formId).classList.add('hidden');
+        }
+
+        // ===== FUNGSI PRODUK =====
+        function tambahProduk() {
+            const kode = document.getElementById('kode-produk').value.trim();
+            const nama = document.getElementById('nama-produk').value.trim();
+            const harga = parseInt(document.getElementById('harga-produk').value);
+            const stok = parseInt(document.getElementById('stok-produk').value);
+            
+            if (!kode || !nama || isNaN(harga) || isNaN(stok)) {
+                alert('Harap isi semua field dengan benar!');
+                return;
+            }
+            
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            
+            // Cek duplikasi kode produk
+            if (produk.some(p => p.kode === kode)) {
+                alert('Kode produk sudah ada!');
+                return;
+            }
+            
+            produk.push({ kode, nama, harga, stok });
+            localStorage.setItem('produk', JSON.stringify(produk));
+            
+            // Reset form
+            document.getElementById('kode-produk').value = '';
+            document.getElementById('nama-produk').value = '';
+            document.getElementById('harga-produk').value = '';
+            document.getElementById('stok-produk').value = '';
+            
+            hideForm('tambah-produk');
+            muatDataProduk();
+            alert('Produk berhasil ditambahkan!');
+        }
+
+        function muatDataProduk() {
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            const daftarProduk = document.getElementById('daftar-produk');
+            daftarProduk.innerHTML = '';
+            
+            produk.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.kode}</td>
+                    <td>${item.nama}</td>
+                    <td class="rupiah">${formatRupiah(item.harga)}</td>
+                    <td>${item.stok}</td>
+                    <td>
+                        <button class="btn" onclick="editProduk(${index})">Edit</button>
+                        <button class="btn btn-secondary" onclick="hapusProduk(${index})">Hapus</button>
+                    </td>
+                `;
+                daftarProduk.appendChild(row);
+            });
+        }
+
+        function editProduk(index) {
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            const item = produk[index];
+            
+            document.getElementById('kode-produk').value = item.kode;
+            document.getElementById('nama-produk').value = item.nama;
+            document.getElementById('harga-produk').value = item.harga;
+            document.getElementById('stok-produk').value = item.stok;
+            
+            showForm('tambah-produk');
+            
+            // Update listener untuk simpan edit
+            const btnSimpan = document.querySelector('#tambah-produk button.btn');
+            btnSimpan.onclick = function() {
+                const kode = document.getElementById('kode-produk').value.trim();
+                const nama = document.getElementById('nama-produk').value.trim();
+                const harga = parseInt(document.getElementById('harga-produk').value);
+                const stok = parseInt(document.getElementById('stok-produk').value);
+                
+                if (!kode || !nama || isNaN(harga) || isNaN(stok)) {
+                    alert('Harap isi semua field dengan benar!');
+                    return;
+                }
+                
+                produk[index] = { kode, nama, harga, stok };
+                localStorage.setItem('produk', JSON.stringify(produk));
+                
+                // Reset form
+                document.getElementById('kode-produk').value = '';
+                document.getElementById('nama-produk').value = '';
+                document.getElementById('harga-produk').value = '';
+                document.getElementById('stok-produk').value = '';
+                
+                hideForm('tambah-produk');
+                muatDataProduk();
+                alert('Produk berhasil diupdate!');
+                
+                // Kembalikan listener ke tambah produk
+                btnSimpan.onclick = tambahProduk;
+            };
+        }
+
+        function hapusProduk(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+                const produk = JSON.parse(localStorage.getItem('produk'));
+                produk.splice(index, 1);
+                localStorage.setItem('produk', JSON.stringify(produk));
+                muatDataProduk();
+                alert('Produk berhasil dihapus!');
+            }
+        }
+
+        // ===== FUNGSI PELANGGAN =====
+        function tambahPelanggan() {
+            const kode = document.getElementById('kode-pelanggan').value.trim();
+            const nama = document.getElementById('nama-pelanggan').value.trim();
+            const alamat = document.getElementById('alamat-pelanggan').value.trim();
+            const telepon = document.getElementById('telepon-pelanggan').value.trim();
+            
+            if (!kode || !nama || !alamat || !telepon) {
+                alert('Harap isi semua field dengan benar!');
+                return;
+            }
+            
+            const pelanggan = JSON.parse(localStorage.getItem('pelanggan'));
+            
+            // Cek duplikasi kode pelanggan
+            if (pelanggan.some(p => p.kode === kode)) {
+                alert('Kode pelanggan sudah ada!');
+                return;
+            }
+            
+            pelanggan.push({ kode, nama, alamat, telepon });
+            localStorage.setItem('pelanggan', JSON.stringify(pelanggan));
+            
+            // Reset form
+            document.getElementById('kode-pelanggan').value = '';
+            document.getElementById('nama-pelanggan').value = '';
+            document.getElementById('alamat-pelanggan').value = '';
+            document.getElementById('telepon-pelanggan').value = '';
+            
+            hideForm('tambah-pelanggan');
+            muatDataPelanggan();
+            muatDataPelangganUntukTransaksi();
+            alert('Pelanggan berhasil ditambahkan!');
+        }
+
+        function muatDataPelanggan() {
+            const pelanggan = JSON.parse(localStorage.getItem('pelanggan'));
+            const daftarPelanggan = document.getElementById('daftar-pelanggan');
+            daftarPelanggan.innerHTML = '';
+            
+            pelanggan.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.kode}</td>
+                    <td>${item.nama}</td>
+                    <td>${item.alamat}</td>
+                    <td>${item.telepon}</td>
+                    <td>
+                        <button class="btn" onclick="editPelanggan(${index})">Edit</button>
+                        <button class="btn btn-secondary" onclick="hapusPelanggan(${index})">Hapus</button>
+                    </td>
+                `;
+                daftarPelanggan.appendChild(row);
+            });
+        }
+
+        function editPelanggan(index) {
+            const pelanggan = JSON.parse(localStorage.getItem('pelanggan'));
+            const item = pelanggan[index];
+            
+            document.getElementById('kode-pelanggan').value = item.kode;
+            document.getElementById('nama-pelanggan').value = item.nama;
+            document.getElementById('alamat-pelanggan').value = item.alamat;
+            document.getElementById('telepon-pelanggan').value = item.telepon;
+            
+            showForm('tambah-pelanggan');
+            
+            // Update listener untuk simpan edit
+            const btnSimpan = document.querySelector('#tambah-pelanggan button.btn');
+            btnSimpan.onclick = function() {
+                const kode = document.getElementById('kode-pelanggan').value.trim();
+                const nama = document.getElementById('nama-pelanggan').value.trim();
+                const alamat = document.getElementById('alamat-pelanggan').value.trim();
+                const telepon = document.getElementById('telepon-pelanggan').value.trim();
+                
+                if (!kode || !nama || !alamat || !telepon) {
+                    alert('Harap isi semua field dengan benar!');
+                    return;
+                }
+                
+                pelanggan[index] = { kode, nama, alamat, telepon };
+                localStorage.setItem('pelanggan', JSON.stringify(pelanggan));
+                
+                // Reset form
+                document.getElementById('kode-pelanggan').value = '';
+                document.getElementById('nama-pelanggan').value = '';
+                document.getElementById('alamat-pelanggan').value = '';
+                document.getElementById('telepon-pelanggan').value = '';
+                
+                hideForm('tambah-pelanggan');
+                muatDataPelanggan();
+                muatDataPelangganUntukTransaksi();
+                alert('Pelanggan berhasil diupdate!');
+                
+                // Kembalikan listener ke tambah pelanggan
+                btnSimpan.onclick = tambahPelanggan;
+            };
+        }
+
+        function hapusPelanggan(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus pelanggan ini?')) {
+                const pelanggan = JSON.parse(localStorage.getItem('pelanggan'));
+                pelanggan.splice(index, 1);
+                localStorage.setItem('pelanggan', JSON.stringify(pelanggan));
+                muatDataPelanggan();
+                muatDataPelangganUntukTransaksi();
+                alert('Pelanggan berhasil dihapus!');
+            }
+        }
+
+        // ===== FUNGSI TRANSAKSI =====
+        let currentTransaksi = {
+            items: [],
+            pelanggan: null,
+            total: 0
+        };
+
+        function muatDataPelangganUntukTransaksi() {
+            const pelanggan = JSON.parse(localStorage.getItem('pelanggan'));
+            const select = document.getElementById('pelanggan-transaksi');
+            
+            // Simpan nilai yang dipilih sebelumnya
+            const selectedValue = select.value;
+            
+            select.innerHTML = '<option value="">-- Umum --</option>';
+            
+            pelanggan.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.kode;
+                option.textContent = `${item.nama} (${item.kode})`;
+                select.appendChild(option);
+            });
+            
+            // Kembalikan nilai yang dipilih sebelumnya jika masih ada
+            if (selectedValue && pelanggan.some(p => p.kode === selectedValue)) {
+                select.value = selectedValue;
+            }
+        }
+
+        function muatDataProdukUntukTransaksi() {
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            const select = document.getElementById('produk-transaksi');
+            
+            // Simpan nilai yang dipilih sebelumnya
+            const selectedValue = select.value;
+            
+            select.innerHTML = '<option value="">-- Pilih Produk --</option>';
+            
+            produk.forEach(item => {
+                if (item.stok > 0) { // Hanya tampilkan produk dengan stok > 0
+                    const option = document.createElement('option');
+                    option.value = item.kode;
+                    option.textContent = `${item.nama} (${formatRupiah(item.harga)}) - Stok: ${item.stok}`;
+                    select.appendChild(option);
+                }
+            });
+            
+            // Kembalikan nilai yang dipilih sebelumnya jika masih ada
+            if (selectedValue && produk.some(p => p.kode === selectedValue)) {
+                select.value = selectedValue;
+            }
+        }
+
+        function tambahItemTransaksi() {
+            const kodeProduk = document.getElementById('produk-transaksi').value;
+            const jumlah = parseInt(document.getElementById('jumlah-transaksi').value);
+            
+            if (!kodeProduk || isNaN(jumlah) || jumlah <= 0) {
+                alert('Harap pilih produk dan masukkan jumlah yang valid!');
+                return;
+            }
+            
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            const produkDipilih = produk.find(p => p.kode === kodeProduk);
+            
+            if (!produkDipilih) {
+                alert('Produk tidak ditemukan!');
+                return;
+            }
+            
+            if (produkDipilih.stok < jumlah) {
+                alert(`Stok tidak mencukupi! Stok tersedia: ${produkDipilih.stok}`);
+                return;
+            }
+            
+            // Cek apakah produk sudah ada di transaksi
+            const itemExist = currentTransaksi.items.find(item => item.kode === kodeProduk);
+            
+            if (itemExist) {
+                itemExist.jumlah += jumlah;
+            } else {
+                currentTransaksi.items.push({
+                    kode: produkDipilih.kode,
+                    nama: produkDipilih.nama,
+                    harga: produkDipilih.harga,
+                    jumlah: jumlah
+                });
+            }
+            
+            // Update total transaksi
+            updateTotalTransaksi();
+            muatDaftarItemTransaksi();
+            muatDataProdukUntukTransaksi(); // Refresh daftar produk
+            
+            // Reset input jumlah
+            document.getElementById('jumlah-transaksi').value = '1';
+        }
+
+        function updateTotalTransaksi() {
+            currentTransaksi.total = currentTransaksi.items.reduce((total, item) => {
+                return total + (item.harga * item.jumlah);
+            }, 0);
+            
+            document.getElementById('total-transaksi').textContent = formatRupiah(currentTransaksi.total);
+        }
+
+        function muatDaftarItemTransaksi() {
+            const daftarItem = document.getElementById('daftar-item-transaksi');
+            daftarItem.innerHTML = '';
+            
+            currentTransaksi.items.forEach((item, index) => {
+                const subtotal = item.harga * item.jumlah;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.nama}</td>
+                    <td class="rupiah">${formatRupiah(item.harga)}</td>
+                    <td>${item.jumlah}</td>
+                    <td class="rupiah">${formatRupiah(subtotal)}</td>
+                    <td>
+                        <button class="btn btn-secondary" onclick="hapusItemTransaksi(${index})">Hapus</button>
+                    </td>
+                `;
+                daftarItem.appendChild(row);
+            });
+        }
+
+        function hapusItemTransaksi(index) {
+            currentTransaksi.items.splice(index, 1);
+            updateTotalTransaksi();
+            muatDaftarItemTransaksi();
+            muatDataProdukUntukTransaksi(); // Refresh daftar produk
+        }
+
+        function resetTransaksi() {
+            if (currentTransaksi.items.length > 0 && !confirm('Apakah Anda yakin ingin membatalkan transaksi ini?')) {
+                return;
+            }
+            
+            currentTransaksi = {
+                items: [],
+                pelanggan: null,
+                total: 0
+            };
+            
+            document.getElementById('pelanggan-transaksi').value = '';
+            document.getElementById('produk-transaksi').value = '';
+            document.getElementById('jumlah-transaksi').value = '1';
+            document.getElementById('total-transaksi').textContent = 'Rp 0';
+            document.getElementById('daftar-item-transaksi').innerHTML = '';
+            
+            muatDataProdukUntukTransaksi();
+        }
+
+        function simpanTransaksi() {
+            if (currentTransaksi.items.length === 0) {
+                alert('Tidak ada item dalam transaksi!');
+                return;
+            }
+            
+            const kodePelanggan = document.getElementById('pelanggan-transaksi').value;
+            const pelanggan = JSON.parse(localStorage.getItem('pelanggan'));
+            const pelangganDipilih = pelanggan.find(p => p.kode === kodePelanggan);
+            
+            // Update stok produk
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            let error = false;
+            
+            currentTransaksi.items.forEach(itemTransaksi => {
+                const produkIndex = produk.findIndex(p => p.kode === itemTransaksi.kode);
+                if (produkIndex !== -1) {
+                    produk[produkIndex].stok -= itemTransaksi.jumlah;
+                    
+                    // Cek stok tidak boleh negatif
+                    if (produk[produkIndex].stok < 0) {
+                        error = true;
+                    }
+                }
+            });
+            
+            if (error) {
+                alert('Terjadi kesalahan pada stok produk! Silahkan ulangi transaksi.');
+                return;
+            }
+            
+            localStorage.setItem('produk', JSON.stringify(produk));
+            
+            // Simpan transaksi
+            const transaksi = JSON.parse(localStorage.getItem('transaksi'));
+            const nomorFaktur = 'FAK-' + new Date().getTime();
+            const tanggal = new Date().toISOString();
+            
+            transaksi.push({
+                nomor: nomorFaktur,
+                tanggal: tanggal,
+                pelanggan: pelangganDipilih || null,
+                items: [...currentTransaksi.items], // Salin array items
+                total: currentTransaksi.total
+            });
+            
+            localStorage.setItem('transaksi', JSON.stringify(transaksi));
+            
+            alert(`Transaksi berhasil disimpan!\n\nNomor Faktur: ${nomorFaktur}\nTotal: ${formatRupiah(currentTransaksi.total)}`);
+            
+            // Reset transaksi
+            resetTransaksi();
+            muatDataProduk(); // Refresh daftar produk
+            muatLaporanStok(); // Refresh laporan stok
+            muatDaftarFaktur(); // Refresh daftar faktur
+        }
+
+        // ===== FUNGSI LAPORAN =====
+        function muatLaporanStok() {
+            const produk = JSON.parse(localStorage.getItem('produk'));
+            const keyword = document.getElementById('keyword-cari-stok').value.toLowerCase();
+            const daftarLaporan = document.getElementById('daftar-laporan');
+            daftarLaporan.innerHTML = '';
+            
+            const produkFiltered = produk.filter(item => 
+                item.nama.toLowerCase().includes(keyword) || 
+                item.kode.toLowerCase().includes(keyword)
+            );
+            
+            if (produkFiltered.length === 0) {
+                daftarLaporan.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada produk yang ditemukan</td></tr>';
+                return;
+            }
+            
+            produkFiltered.forEach(item => {
+                const status = item.stok > 0 ? 'Tersedia' : 'Habis';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.kode}</td>
+                    <td>${item.nama}</td>
+                    <td class="rupiah">${formatRupiah(item.harga)}</td>
+                    <td>${item.stok}</td>
+                    <td>${status}</td>
+                `;
+                daftarLaporan.appendChild(row);
+            });
+        }
+
+        function cariStok() {
+            muatLaporanStok();
+        }
+
+        // ===== FUNGSI FAKTUR =====
+        function muatDaftarFaktur() {
+            const transaksi = JSON.parse(localStorage.getItem('transaksi'));
+            const select = document.getElementById('nomor-faktur');
+            
+            // Simpan nilai yang dipilih sebelumnya
+            const selectedValue = select.value;
+            
+            select.innerHTML = '<option value="">-- Pilih nomor faktur --</option>';
+            
+            transaksi.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.nomor;
+                option.textContent = `${item.nomor} - ${formatTanggal(item.tanggal)} - ${formatRupiah(item.total)}`;
+                select.appendChild(option);
+            });
+            
+            // Kembalikan nilai yang dipilih sebelumnya jika masih ada
+            if (selectedValue && transaksi.some(t => t.nomor === selectedValue)) {
+                select.value = selectedValue;
+                tampilkanFaktur();
+            }
+        }
+
+        function tampilkanFaktur() {
+            const nomorFaktur = document.getElementById('nomor-faktur').value;
+            if (!nomorFaktur) {
+                document.getElementById('detail-faktur').innerHTML = '';
+                return;
+            }
+            
+            const transaksi = JSON.parse(localStorage.getItem('transaksi'));
+            const faktur = transaksi.find(t => t.nomor === nomorFaktur);
+            
+            if (!faktur) return;
+            
+            const detailFaktur = document.getElementById('detail-faktur');
+            
+            let html = `
+                <div class="faktur-header">
+                    <div class="faktur-title">TOKO KELONTONG</div>
+                    <div>Jln. Cendra Indah No. 123, Kota Padang</div>
+                    <div>Telp: 0823-9837-2374</div>
+                </div>
+                
+                <div class="faktur-info">
+                    <div class="faktur-info-item">
+                        <strong>No. Faktur:</strong> ${faktur.nomor}<br>
+                        <strong>Tanggal:</strong> ${formatTanggal(faktur.tanggal)}
+                    </div>
+                    <div class="faktur-info-item" style="text-align: right;">
+                        <strong>Kasir:</strong> Admin Toko
+                    </div>
+                </div>
+            `;
+            
+            if (faktur.pelanggan) {
+                html += `
+                    <div class="faktur-pelanggan">
+                        <strong>Pelanggan:</strong> ${faktur.pelanggan.nama}<br>
+                        <strong>Alamat:</strong> ${faktur.pelanggan.alamat}<br>
+                        <strong>Telepon:</strong> ${faktur.pelanggan.telepon}
+                    </div>
+                `;
+            }
+            
+            html += `<table><thead><tr>
+                <th>Produk</th>
+                <th style="text-align: right;">Harga</th>
+                <th style="text-align: center;">Jumlah</th>
+                <th style="text-align: right;">Subtotal</th>
+            </tr></thead><tbody>`;
+            
+            faktur.items.forEach(item => {
+                const subtotal = item.harga * item.jumlah;
+                html += `
+                    <tr>
+                        <td>${item.nama}</td>
+                        <td style="text-align: right;" class="rupiah">${formatRupiah(item.harga)}</td>
+                        <td style="text-align: center;">${item.jumlah}</td>
+                        <td style="text-align: right;" class="rupiah">${formatRupiah(subtotal)}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table>
+                <div class="faktur-footer">
+                    <h3>Total: <span class="rupiah-total">${formatRupiah(faktur.total)}</span></h3>
+                    <p>Terima kasih telah berbelanja di Toko Kelontong</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px;">
+                    <button class="btn" onclick="cetakFaktur()">Cetak Faktur</button>
+                    <button class="btn btn-secondary" onclick="hapusFaktur('${faktur.nomor}')">Hapus Faktur</button>
+                </div>
+            `;
+            
+            detailFaktur.innerHTML = html;
+        }
+
+        function cetakFaktur() {
+            const fakturContent = document.getElementById('detail-faktur').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = fakturContent;
+            
+            // Sembunyikan tombol cetak saat mencetak
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @media print {
+                    button {
+                        display: none !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+
+        function hapusFaktur(nomorFaktur) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus faktur ${nomorFaktur}?`)) {
+                return;
+            }
+            
+            const transaksi = JSON.parse(localStorage.getItem('transaksi'));
+            const index = transaksi.findIndex(t => t.nomor === nomorFaktur);
+            
+            if (index !== -1) {
+                // Kembalikan stok produk yang terkait dengan faktur ini
+                const produk = JSON.parse(localStorage.getItem('produk'));
+                
+                transaksi[index].items.forEach(item => {
+                    const produkIndex = produk.findIndex(p => p.kode === item.kode);
+                    if (produkIndex !== -1) {
+                        produk[produkIndex].stok += item.jumlah;
+                    }
+                });
+                
+                // Simpan perubahan stok
+                localStorage.setItem('produk', JSON.stringify(produk));
+                
+                // Hapus transaksi dari daftar
+                transaksi.splice(index, 1);
+                localStorage.setItem('transaksi', JSON.stringify(transaksi));
+                
+                alert(`Faktur ${nomorFaktur} berhasil dihapus!`);
+                
+                // Perbarui tampilan
+                muatDaftarFaktur();
+                document.getElementById('detail-faktur').innerHTML = '';
+                muatDataProduk(); // Perbarui data produk
+                muatLaporanStok(); // Perbarui laporan stok
+            }
+        }
+
+        // Format tanggal
+        function formatTanggal(tanggalStr) {
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date(tanggalStr).toLocaleDateString('id-ID', options);
+        }
+
+        // ===== FUNGSI REKAPITULASI PENJUALAN =====
+        let salesChart = null;
+
+        function initLaporanPenjualan() {
+            // Set tanggal default ke hari ini
+            const today = new Date();
+            document.getElementById('filter-tanggal').valueAsDate = today;
+            
+            // Set bulan default ke bulan ini
+            const month = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+            document.getElementById('filter-bulan').value = month;
+            
+            // Isi dropdown tahun
+            const tahunSelect = document.getElementById('filter-tahun');
+            tahunSelect.innerHTML = '';
+            
+            const transaksi = JSON.parse(localStorage.getItem('transaksi'));
+            if (transaksi.length > 0) {
+                // Ambil tahun dari transaksi pertama dan terakhir
+                const firstYear = new Date(transaksi[0].tanggal).getFullYear();
+                const lastYear = new Date(transaksi[transaksi.length - 1].tanggal).getFullYear();
+                
+                // Isi dropdown tahun dari tahun pertama sampai tahun sekarang
+                for (let year = firstYear; year <= lastYear; year++) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    if (year === today.getFullYear()) {
+                        option.selected = true;
+                    }
+                    tahunSelect.appendChild(option);
+                }
+            } else {
+                // Jika tidak ada transaksi, isi dengan tahun sekarang
+                const option = document.createElement('option');
+                option.value = today.getFullYear();
+                option.textContent = today.getFullYear();
+                option.selected = true;
+                tahunSelect.appendChild(option);
+            }
+            
+            // Muat laporan pertama kali
+            muatLaporanPenjualan();
+        }
+
+        function ubahPeriodeLaporan() {
+            const periode = document.getElementById('periode-laporan').value;
+            
+            // Sembunyikan semua filter
+            document.getElementById('filter-tanggal-container').classList.add('hidden');
+            document.getElementById('filter-bulan-container').classList.add('hidden');
+            document.getElementById('filter-tahun-container').classList.add('hidden');
+            
+            // Tampilkan filter yang sesuai
+            if (periode === 'harian') {
+                document.getElementById('filter-tanggal-container').classList.remove('hidden');
+            } else if (periode === 'bulanan') {
+                document.getElementById('filter-bulan-container').classList.remove('hidden');
+            } else if (periode === 'tahunan') {
+                document.getElementById('filter-tahun-container').classList.remove('hidden');
+            }
+            
+            // Muat laporan
+            muatLaporanPenjualan();
+        }
+
+        function muatLaporanPenjualan() {
+            const periode = document.getElementById('periode-laporan').value;
+            const transaksi = JSON.parse(localStorage.getItem('transaksi'));
+            
+            let transaksiFiltered = [];
+            let labelChart = [];
+            let dataChart = [];
+            
+            if (periode === 'harian') {
+                const tanggal = document.getElementById('filter-tanggal').value;
+                if (!tanggal) return;
+                
+                const dateObj = new Date(tanggal);
+                const dateStr = dateObj.toISOString().split('T')[0];
+                
+                // Filter transaksi pada tanggal yang dipilih
+                transaksiFiltered = transaksi.filter(t => {
+                    const tDate = t.tanggal.split('T')[0];
+                    return tDate === dateStr;
+                });
+                
+                // Buat data untuk chart (per jam)
+                const hours = Array.from({length: 24}, (_, i) => i);
+                labelChart = hours.map(h => `${h}:00`);
+                dataChart = hours.map(h => {
+                    return transaksiFiltered.reduce((total, t) => {
+                        const tHour = new Date(t.tanggal).getHours();
+                        return tHour === h ? total + t.total : total;
+                    }, 0);
+                });
+                
+                document.getElementById('total-transaksi-report').textContent = transaksiFiltered.length;
+                
+            } else if (periode === 'bulanan') {
+                const bulan = document.getElementById('filter-bulan').value;
+                if (!bulan) return;
+                
+                const [year, month] = bulan.split('-');
+                
+                // Filter transaksi pada bulan yang dipilih
+                transaksiFiltered = transaksi.filter(t => {
+                    const tDate = new Date(t.tanggal);
+                    return tDate.getFullYear() == year && (tDate.getMonth() + 1) == month;
+                });
+                
+                // Buat data untuk chart (per hari)
+                const daysInMonth = new Date(year, month, 0).getDate();
+                labelChart = Array.from({length: daysInMonth}, (_, i) => i + 1);
+                dataChart = labelChart.map(day => {
+                    return transaksiFiltered.reduce((total, t) => {
+                        const tDay = new Date(t.tanggal).getDate();
+                        return tDay === day ? total + t.total : total;
+                    }, 0);
+                });
+                
+                document.getElementById('total-transaksi-report').textContent = transaksiFiltered.length;
+                
+            } else if (periode === 'tahunan') {
+                const tahun = document.getElementById('filter-tahun').value;
+                if (!tahun) return;
+                
+                // Filter transaksi pada tahun yang dipilih
+                transaksiFiltered = transaksi.filter(t => {
+                    const tYear = new Date(t.tanggal).getFullYear();
+                    return tYear == tahun;
+                });
+                
+                // Buat data untuk chart (per bulan)
+                labelChart = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                dataChart = labelChart.map((_, monthIndex) => {
+                    return transaksiFiltered.reduce((total, t) => {
+                        const tMonth = new Date(t.tanggal).getMonth();
+                        return tMonth === monthIndex ? total + t.total : total;
+                    }, 0);
+                });
+                
+                document.getElementById('total-transaksi-report').textContent = transaksiFiltered.length;
+            }
+            
+            // Hitung total pendapatan
+            const totalPendapatan = transaksiFiltered.reduce((total, t) => total + t.total, 0);
+            document.getElementById('total-pendapatan-report').textContent = formatRupiah(totalPendapatan);
+            
+            // Cari produk terlaris
+            const produkTerjual = {};
+            transaksiFiltered.forEach(t => {
+                t.items.forEach(item => {
+                    if (produkTerjual[item.kode]) {
+                        produkTerjual[item.kode].jumlah += item.jumlah;
+                    } else {
+                        produkTerjual[item.kode] = {
+                            nama: item.nama,
+                            jumlah: item.jumlah
+                        };
+                    }
+                });
+            });
+            
+            let produkTerlaris = '-';
+            if (Object.keys(produkTerjual).length > 0) {
+                const sortedProduk = Object.values(produkTerjual).sort((a, b) => b.jumlah - a.jumlah);
+                produkTerlaris = `${sortedProduk[0].nama} (${sortedProduk[0].jumlah} pcs)`;
+            }
+            document.getElementById('produk-terlaris-report').textContent = produkTerlaris;
+            
+            // Cari pelanggan terbanyak
+            const pelangganTransaksi = {};
+            transaksiFiltered.forEach(t => {
+                if (t.pelanggan) {
+                    const kode = t.pelanggan.kode;
+                    if (pelangganTransaksi[kode]) {
+                        pelangganTransaksi[kode].jumlah += 1;
+                        pelangganTransaksi[kode].total += t.total;
+                    } else {
+                        pelangganTransaksi[kode] = {
+                            nama: t.pelanggan.nama,
+                            jumlah: 1,
+                            total: t.total
+                        };
+                    }
+                }
+            });
+            
+            let pelangganTerbanyak = '-';
+            if (Object.keys(pelangganTransaksi).length > 0) {
+                const sortedPelanggan = Object.values(pelangganTransaksi).sort((a, b) => b.jumlah - a.jumlah);
+                pelangganTerbanyak = `${sortedPelanggan[0].nama} (${sortedPelanggan[0].jumlah}x)`;
+            }
+            document.getElementById('pelanggan-terbanyak-report').textContent = pelangganTerbanyak;
+            
+            // Tampilkan daftar transaksi
+            const daftarTransaksi = document.getElementById('daftar-transaksi-report');
+            daftarTransaksi.innerHTML = '';
+            
+            if (transaksiFiltered.length === 0) {
+                daftarTransaksi.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tidak ada transaksi pada periode ini</td></tr>';
+            } else {
+                transaksiFiltered.forEach(t => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${t.nomor}</td>
+                        <td>${formatTanggal(t.tanggal)}</td>
+                        <td>${t.pelanggan ? t.pelanggan.nama : 'Umum'}</td>
+                        <td class="rupiah">${formatRupiah(t.total)}</td>
+                    `;
+                    daftarTransaksi.appendChild(row);
+                });
+            }
+            
+            // Update chart
+            updateChart(labelChart, dataChart, periode);
+        }
+
+        function updateChart(labels, data, periode) {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            
+            // Hancurkan chart sebelumnya jika ada
+            if (salesChart) {
+                salesChart.destroy();
+            }
+            
+            let title = '';
+            if (periode === 'harian') {
+                title = 'Penjualan Per Jam';
+            } else if (periode === 'bulanan') {
+                title = 'Penjualan Per Hari';
+            } else if (periode === 'tahunan') {
+                title = 'Penjualan Per Bulan';
+            }
+            
+            salesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Penjualan',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatRupiah(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: title,
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatRupiah(context.raw);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function cetakLaporan() {
+            const laporanContent = document.getElementById('rekapitulasi').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <h1 style="text-align: center; margin-bottom: 20px;">Laporan Penjualan</h1>
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <div><strong>Periode:</strong> ${document.getElementById('periode-laporan').options[document.getElementById('periode-laporan').selectedIndex].text}</div>
+                        <div><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                    </div>
+                    ${laporanContent}
+                </div>
+            `;
+            
+            // Sembunyikan tombol cetak saat mencetak
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @media print {
+                    button, .filter-container, .chart-container {
+                        display: none !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+
+        function eksporLaporan() {
+            alert('Fitur ekspor ke Excel akan diimplementasikan di sini');
+            // Implementasi ekspor ke Excel bisa menggunakan library seperti SheetJS
+        }
+
+        // Inisialisasi saat halaman dimuat
+        window.onload = function() {
+            initData();
+            showSection('produk');
+            muatDataProduk();
+            muatDataPelanggan();
+            muatDataPelangganUntukTransaksi();
+            muatDataProdukUntukTransaksi();
+            muatLaporanStok();
+            muatDaftarFaktur();
+            
+            // Preview harga saat input
+            document.getElementById('harga-produk').addEventListener('input', function() {
+                const harga = parseInt(this.value) || 0;
+                document.getElementById('harga-preview').textContent = formatRupiah(harga);
+            });
+        };
+    </script>
+</body>
+</html>
